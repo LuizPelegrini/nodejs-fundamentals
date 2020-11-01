@@ -58,7 +58,20 @@ app.put("/repositories/:id", (request, response) => {
 });
 
 app.delete("/repositories/:id", (request, response) => {
-  // TODO
+  // Extracting id from route params
+  const { id } = request.params;
+
+  // tries to find index
+  const repoIndex = repositories.findIndex(repo => repo.id === id);
+  if(repoIndex < 0){
+    return response.status(400).json({ error: 'Cannot find project' });
+  }
+
+  // remove repo from repositories
+  repositories.splice(repoIndex, 1);
+
+  // return empty response
+  return response.status(204).send();
 });
 
 app.post("/repositories/:id/like", (request, response) => {
