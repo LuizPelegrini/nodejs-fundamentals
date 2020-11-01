@@ -47,12 +47,13 @@ app.put("/repositories/:id", (request, response) => {
     return response.status(400).json({ error: 'No repo has been found' });
   }
   
-  // create a new repo with the updated data
+  // create a new repo with the updated data. It does not change the number of likes
   const updatedRepo = {
     id,
     title,
     url,
-    techs
+    techs,
+    likes: repositories[repoIndex].likes
   };
 
   // replace at the same location as the previous one
@@ -89,7 +90,7 @@ app.post("/repositories/:id/like", (request, response) => {
 
   // add one more like when this request is sent
   repositories[repoIndex].likes++;
-
+  
   return response.json(repositories[repoIndex]);
 });
 
