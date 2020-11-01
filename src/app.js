@@ -34,7 +34,27 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  // Destructure id from route params and body data from body
+  const { id } = request.params;
+  const { title, url, techs } = request.body;
+
+  // tries to find index
+  const repoIndex = repositories.findIndex(repo => repo.id === id);
+  if(repoIndex < 0){
+    return response.status(400).json({ error: 'Cannot find project' });
+  }
+  
+  // create a new repo with the updated data
+  const updatedRepo = {
+    id,
+    title,
+    url,
+    techs
+  };
+
+  // replace at the same location as the previous one
+  repositories[repoIndex] = updatedRepo;
+  return response.json(updatedRepo);
 });
 
 app.delete("/repositories/:id", (request, response) => {
